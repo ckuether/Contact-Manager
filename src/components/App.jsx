@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import api from './api';
+import api from '../api';
+import TitleBar from './TitleBar';
+import CatList from './CatList';
 
 class App extends Component {
-  state = {
-    cats: [],
-  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = { cats: [] };
+  }
 
   componentDidMount() {
     api.getCats().then(cats => this.setState({ cats }));
@@ -24,21 +29,9 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Contact Manager</h2>
-        </div>
-        {
-          this.state.cats &&
-          <ul>
-            {this.state.cats.map(cat => (
-              <li key={cat.id}>
-                Name: {cat.name}
-                Image: <img src={cat.img} alt="" />
-              </li>
-            ))}
-          </ul>
-        }
+      <div className="App container">
+        <TitleBar />
+        <CatList cats={this.state.cats} />
         <form onSubmit={this.handleSubmit}>
           <fieldset>
             <legend>Add a Cat</legend>
