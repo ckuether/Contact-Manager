@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import api from '../api';
 import TitleBar from './TitleBar';
-import CatList from './CatList';
+import CatList from '../containers/CatList';
 
 class App extends Component {
 
@@ -31,7 +31,7 @@ class App extends Component {
     return (
       <div className="App container">
         <TitleBar />
-        <CatList cats={this.state.cats} />
+        <CatList />
         <form onSubmit={this.handleSubmit}>
           <fieldset>
             <legend>Add a Cat</legend>

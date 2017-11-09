@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './CatList.css';
 
 class CatList extends Component {
@@ -24,4 +25,13 @@ class CatList extends Component {
     }
 }
 
-export default CatList;
+function mapStateToProps(state){
+    //Whatever is returned will show up as props
+    return {
+        cats: state.cats
+    };
+}
+
+
+//Takes function and component and creates state container
+export default connect(mapStateToProps)(CatList);
