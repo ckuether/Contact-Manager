@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
-import CatsReducer from './reducer_cats';
+import { cats, catsIsLoading, catsHasErrored } from './reducer_cats';
 import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
-    cats: CatsReducer,
+    cats,
+    catsIsLoading,
+    catsHasErrored,
     form: formReducer
 });
 

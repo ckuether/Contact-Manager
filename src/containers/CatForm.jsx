@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import './CatForm.css';
-import { addCat } from '../actions/index';
+import { addCat, fetchCats } from '../actions';
+import api from '../api';
 
 //{...input} Destucturing of object. Shows all properties of input
 const renderField = ({ input, label, type, meta: {touched, error, warning, invalid } }) => (
@@ -14,9 +15,14 @@ const renderField = ({ input, label, type, meta: {touched, error, warning, inval
 )
 
 class CatForm extends Component {
-
     onSubmit = (props) => {
-        this.props.addCat(props);
+        console.log(props);
+        api.addCat({
+            name: props.name,
+            img: props.imageUrl
+        })
+        .then(() => this.props.fetchCats());
+        // this.props.addCat(props);
     }
 
     render(){
@@ -51,7 +57,7 @@ function validate(values){
     return errors;
 }
 
-export default connect(null, { addCat })(reduxForm({
+export default connect(null, { addCat, fetchCats })(reduxForm({
     form: 'CatForm',
     validate
 })(CatForm));

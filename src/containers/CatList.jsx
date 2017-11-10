@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { fetchCats } from '../actions';
 import './CatList.css';
 
 class CatList extends Component {
+
+    componentDidMount() {
+        this.props.fetchCats()
+    }
+
     renderList() {
         return this.props.cats.map((cat) => {
             return (
@@ -16,6 +22,14 @@ class CatList extends Component {
     }
 
     render(){
+        if(this.props.catsIsLoading){
+            return <p>Loading...</p>;
+        }
+
+        if(this.props.catsHasErrored){
+            return <p>Sorry! We are unable to find the cats right now</p>;
+        }
+
         return (
             <ul className="list-group col-sm-4">
                 {this.renderList()}
@@ -27,10 +41,12 @@ class CatList extends Component {
 function mapStateToProps(state){
     //Whatever is returned will show up as props
     return {
-        cats: state.cats
+        cats: state.cats,
+        catsIsLoading: state.catsIsLoading,
+        catsHasErrored: state.catsHasErrored
     };
 }
 
 
 //Takes function and component and creates state container
-export default connect(mapStateToProps)(CatList);
+export default connect(mapStateToProps, { fetchCats })(CatList);
