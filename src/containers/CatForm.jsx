@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import './CatForm.css';
 import { addCat } from '../actions/index';
 
-const renderField = ({ input, label, type, meta: {touched, error, warning } }) => (
-    <div className="form-group">
+//{...input} Destucturing of object. Shows all properties of input
+const renderField = ({ input, label, type, meta: {touched, error, warning, invalid } }) => (
+    <div className={`form-group ${touched && invalid ? 'has-danger' : ''}`}>
         <label><b>{label}</b></label>
         <input {...input} className="form-control" type={type}/>
         {touched && (error && <div className="text-help">{error}</div>)}
@@ -18,7 +19,6 @@ class CatForm extends Component {
         this.props.addCat(props);
     }
 
-    //{...title} Destucturing of object. Shows all properties of input
     render(){
         const { handleSubmit } = this.props;
 
