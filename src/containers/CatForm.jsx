@@ -6,7 +6,7 @@ import { addCat, fetchCats } from '../actions';
 import api from '../api';
 
 //{...input} Destucturing of object. Shows all properties of input
-const renderField = ({ input, label, type, meta: {touched, error, warning, invalid } }) => (
+const renderField = ({ input, label, type, meta: {touched, error, invalid } }) => (
     <div className={`form-group ${touched && invalid ? 'has-danger' : ''}`}>
         <label><b>{label}</b></label>
         <input {...input} className="form-control" type={type}/>
@@ -16,17 +16,12 @@ const renderField = ({ input, label, type, meta: {touched, error, warning, inval
 
 class CatForm extends Component {
     onSubmit = (props) => {
-        console.log(props);
-        api.addCat({
-            name: props.name,
-            img: props.imageUrl
-        })
-        .then(() => this.props.fetchCats());
-        // this.props.addCat(props);
+        this.props.addCat(props);
+        this.props.reset();
     }
 
     render(){
-        const { handleSubmit } = this.props;
+        const { handleSubmit, reset } = this.props;
 
         return (
             <form className="CatForm" onSubmit={handleSubmit(this.onSubmit.bind(this))}>

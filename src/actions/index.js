@@ -5,20 +5,6 @@ export const CATS_IS_LOADING = 'CATS_IS_LOADING';
 export const FETCH_CATS_SUCCESS = 'FETCH_CATS_SUCCESS';
 export const CATS_HAS_ERRORED = 'CATS_HAS_ERRORED';
 
-export function addCat(cat) {
-
-    api.addCat({
-        name: cat.name,
-        img: cat.imageUrl
-    })
-    .then(fetchCats());
-
-    // api.addCat({
-    //     name: cat.name,
-    //     img: cat.imageUrl
-    // })
-}
-
 export function catsHasErrored(bool) {
     return {
         type: CATS_HAS_ERRORED,
@@ -51,5 +37,15 @@ export function fetchCats() {
         })
         .then(cats => dispatch(fetchCatsSuccess(cats)))
         .catch(() => dispatch(catsHasErrored(true)))
+    }
+}
+
+export function addCat(cat) {
+    return (dispatch) => {
+        api.addCat({
+            name: cat.name,
+            img: cat.imageUrl
+        })
+        .then(dispatch(fetchCats()))
     }
 }
