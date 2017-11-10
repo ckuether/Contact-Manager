@@ -4,7 +4,6 @@ import './CatList.css';
 
 class CatList extends Component {
     renderList() {
-        console.log(this.props.cats);
         return this.props.cats.map((cat) => {
             return (
                 <li key={cat.id}

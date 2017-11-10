@@ -1,41 +1,57 @@
 import React, { Component } from 'react';
+import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 import './CatForm.css';
+import { addCat } from '../actions/index';
+
+const renderField = ({ input, label, type, meta: {touched, error, warning } }) => (
+    <div className="form-group">
+        <label><b>{label}</b></label>
+        <input {...input} className="form-control" type={type}/>
+        {touched && (error && <div className="text-help">{error}</div>)}
+    </div>
+)
 
 class CatForm extends Component {
-    handleSubmit = (cat) => {
-        console.log("Submit Cat!");
-        // cat.preventDefault();
 
-        // const { name, img } = cat.target;
+    onSubmit = (props) => {
+        this.props.addCat(props);
+    }
 
-        // api.addCat({
-        //     name: name.value,
-        //     img: img.value,
-        // }).then(cats => this.setState({ cats }));
-    };
-
+    //{...title} Destucturing of object. Shows all properties of input
     render(){
+        const { handleSubmit } = this.props;
+
         return (
-            <div className="CatForm">
-                <form onSubmit={this.handleSubmit}>
+            <form className="CatForm" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <fieldset>
                     <legend>Add a Cat</legend>
-                    <div className="form-group">
-                        <label htmlFor="name"><b>Name</b></label>
-                        <input className="form-control" name="name" id="name" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="img"><b>Url to Image</b></label>
-                        <input className="form-control" name="img" id="img" />
-                    </div>
+
+                    <Field label="Name" name="name" type="text" component={renderField} />
+                    <Field label="Url to Image" name="imageUrl" type="text" component={renderField} />
                     <div>
-                        <button type="button" className="btn btn-primary">Add Cat</button>
+                        <button type="submit" className="btn btn-primary">Add Cat</button>
                     </div>
                 </fieldset>
-                </form>
-            </div>
+            </form>
         );
     }
 }
 
-export default CatForm;
+function validate(values){
+    const errors = {};
+
+    if(!values.name){
+        errors.name = 'Enter Name';
+    }
+
+    if(!values.imageUrl){
+        errors.imageUrl = 'Enter Image URL';
+    }
+    return errors;
+}
+
+export default connect(null, { addCat })(reduxForm({
+    form: 'CatForm',
+    validate
+})(CatForm));
